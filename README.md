@@ -1,18 +1,27 @@
-# DungeonRun
+# Dungeons
 
 ## Locations
 
-Name
+- Name
+- Description - can vary per race/class perceiving the room
+- Items in a flexible inventory
 
-Description
+### Tavern
 
-Items in a flexible inventory
-
+The tavern is a special location where you can change adventurers.
 
 ## Adventurers
 
-Name
-Race - bonus to stats
-Class - determines which checks are available
-Stats - bonus to checks
+- Name
+- Race - affects size and inante abilities
+- Class - determines which checks are available
+- Location
+- No stats - too complicated
+- Inventory of 3 items
+
+## Items
+
+- Name
+- Description - could vary per race/class
+- Can be used in a location
 
