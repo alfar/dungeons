@@ -16,5 +16,3 @@ Race - bonus to stats
 Class - determines which checks are available
 Stats - bonus to checks
 
-
-
