@@ -1,0 +1,16 @@
+.inventory {
+    &__items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    }    
+
+    section {
+        border: solid 1px #ccc;
+        border-radius: 8px;
+        padding: 5px;
+        width: max-content;        
+        margin: 5px 0 0 0;
+    }
+}

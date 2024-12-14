@@ -1,0 +1,13 @@
+.item-slot {
+    width: 80px;
+    height: 80px;
+    border: solid 2px #000;
+    border-radius: 8px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+
+    &--selected {
+        box-shadow: 0 0 8px 2px #ffbb00;
+    }
+}

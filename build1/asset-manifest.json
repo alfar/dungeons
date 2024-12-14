@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/jul24/static/css/main.7778cb7a.css",
+    "main.js": "/jul24/static/js/main.a70d9577.js",
+    "static/js/453.4565e53e.chunk.js": "/jul24/static/js/453.4565e53e.chunk.js",
+    "static/media/items.png": "/jul24/static/media/items.1d22c1bbdbca56695e5b.png",
+    "index.html": "/jul24/index.html",
+    "main.7778cb7a.css.map": "/jul24/static/css/main.7778cb7a.css.map",
+    "main.a70d9577.js.map": "/jul24/static/js/main.a70d9577.js.map",
+    "453.4565e53e.chunk.js.map": "/jul24/static/js/453.4565e53e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7778cb7a.css",
+    "static/js/main.a70d9577.js"
+  ]
+}
