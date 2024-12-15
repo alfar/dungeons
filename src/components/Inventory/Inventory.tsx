@@ -1,4 +1,3 @@
-import { adventurers } from "../../resources/adventurers";
 import { itemDescriptions } from "../../resources/itemDescriptions";
 import { ItemSlot } from "../ItemSlot/ItemSlot";
 

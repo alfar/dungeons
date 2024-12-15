@@ -5,6 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './app/store';
+import { fetchUpdate } from './features/updater/updaterSlice';
+
+store.dispatch(fetchUpdate());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

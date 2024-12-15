@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Inventory } from "../Inventory/Inventory";
 import { ActionData } from "../../resources/locations";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, withSave } from "../../app/hooks";
 import QRCode from "react-qr-code";
 
 interface LocationProps {
@@ -24,7 +24,7 @@ export function Location(props: LocationProps) {
         commands.push(<button key={-1} onClick={() => props.onPickUp(selectedSlotIndex)}>Saml op</button>);
         if (props.actions && props.actions[props.items[selectedSlotIndex]]) {
             const act = props.actions[props.items[selectedSlotIndex]].act;
-            commands.push(<button key={0} onClick={() => dispatch(act)}>{props.actions[props.items[selectedSlotIndex]].text}</button>);
+            commands.push(<button key={0} onClick={() => dispatch(withSave(act))}>{props.actions[props.items[selectedSlotIndex]].text}</button>);
         }
     }
 

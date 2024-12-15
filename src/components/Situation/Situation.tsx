@@ -7,8 +7,10 @@ import "./Situation.scss";
 import { locations } from "../../resources/locations";
 import { adventurers } from "../../resources/adventurers";
 import { Roster } from "../Roster/Roster";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector, withSave } from "../../app/hooks";
 import { changeLocation, dropItem, initializeLocation, pickUpItem, selectAdventurer } from "../../features/game/gameSlice";
+import { Updater } from "../Updater/Updater";
+import { markForSave } from "../../features/updater/updaterSlice";
 
 interface SituationProps {
     adventurerId: number,
@@ -22,17 +24,17 @@ export function Situation(props: SituationProps) {
 
     const adventurer = adventurers[state.activeAdventurer];
     adventurer.items = state.adventurerItems[state.activeAdventurer] ?? [];
-    adventurer.lastLocation = state.currentLocation;
+    adventurer.lastLocation = state.currentLocation[state.activeAdventurer] ?? 0;
 
     const location = locations[props.locationId](adventurer, state);
 
     useEffect(() => {
         if (!location.locked) {
             if (adventurer.lastLocation !== props.locationId) {
-                dispatch(changeLocation(props.locationId));
+                dispatch(withSave(changeLocation({ locationId: props.locationId, adventurerId: state.activeAdventurer })));
             }
             if (state.locationItems[props.locationId] === undefined) {
-                dispatch(initializeLocation(location.items ?? []))
+                dispatch(withSave(initializeLocation(location.items ?? [])));
             }
         }        
     });
@@ -43,12 +45,12 @@ export function Situation(props: SituationProps) {
 
     const dropAction = (index: number) => {
         if (!location.locked) {
-            dispatch(dropItem(index));
+            dispatch(withSave(dropItem(index)));
         }
     };
 
     const pickUpAction = (index: number) => {
-        dispatch(pickUpItem({ locationId: props.locationId, itemIndex: index}));
+        dispatch(withSave(pickUpItem({ locationId: props.locationId, itemIndex: index})));
     };
 
     const switchAdventurer = (id: number) => {
@@ -59,6 +61,7 @@ export function Situation(props: SituationProps) {
 
     return (
         <div className="situation">
+            <Updater />
             {roster}
             <Adventurer {...adventurer} locked={location.locked} actions={location.actions} items={adventurer.items ?? []} onDrop={dropAction} />
             <Location {...location} items={location.items ?? []} onPickUp={pickUpAction} />

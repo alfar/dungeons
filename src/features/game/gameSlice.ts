@@ -1,9 +1,10 @@
 import { Action, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { adventurers } from "../../resources/adventurers";
+import { fetchUpdate } from "../updater/updaterSlice";
 
 export interface GameState {
     activeAdventurer: number;
-    currentLocation: number;
+    currentLocation: { [id: number]: number };
     locationItems: { [id: number]: number[] };
     adventurerItems: { [id: number]: number[] };
     flags: string[];
@@ -11,11 +12,16 @@ export interface GameState {
 
 const initialState: GameState = {
     activeAdventurer: 1,
-    currentLocation: 0,
+    currentLocation: {},
     locationItems: {},
     adventurerItems: {},
     flags: []
 };
+
+interface ChangeLocationPayload {
+    locationId: number;
+    adventurerId: number;
+}
 
 interface PickupActionPayload {
     locationId: number;
@@ -26,14 +32,14 @@ export const gameSlice = createSlice({
     name: 'items',
     initialState: initialState,
     reducers: {
-        changeLocation: (state, action: PayloadAction<number>) => {
-            state.currentLocation = action.payload;
+        changeLocation: (state: GameState, action: PayloadAction<ChangeLocationPayload>) => {
+            state.currentLocation[action.payload.adventurerId] = action.payload.locationId;
         },
-        selectAdventurer: (state, action: PayloadAction<number>) => {
+        selectAdventurer: (state: GameState, action: PayloadAction<number>) => {
             state.activeAdventurer = action.payload;
             localStorage.setItem("adventurerId", action.payload.toString());
         },
-        pickUpItem: (state, action: PayloadAction<PickupActionPayload>) => {
+        pickUpItem: (state: GameState, action: PayloadAction<PickupActionPayload>) => {
             if (state.adventurerItems[state.activeAdventurer] === undefined) {
                 state.adventurerItems[state.activeAdventurer] = adventurers[state.activeAdventurer].items;
             }
@@ -50,28 +56,34 @@ export const gameSlice = createSlice({
             }
             state.locationItems[action.payload.locationId] = state.locationItems[action.payload.locationId].filter((_, i) => i !== action.payload.itemIndex);
         },
-        dropItem: (state, action: PayloadAction<number>) => {
-            state.locationItems[state.currentLocation].push(state.adventurerItems[state.activeAdventurer][action.payload]);
+        dropItem: (state: GameState, action: PayloadAction<number>) => {
+            state.locationItems[state.currentLocation[state.activeAdventurer] ?? 0].push(state.adventurerItems[state.activeAdventurer][action.payload]);
             state.adventurerItems[state.activeAdventurer] = state.adventurerItems[state.activeAdventurer].filter((_, i) => i !== action.payload);
         },
-        initializeLocation: (state, action: PayloadAction<number[]>) => {
-            state.locationItems[state.currentLocation] = action.payload;
+        initializeLocation: (state: GameState, action: PayloadAction<number[]>) => {
+            state.locationItems[state.currentLocation[state.activeAdventurer] ?? 0] = action.payload;
         },
-        setFlag: (state, action: PayloadAction<string>) => {
+        setFlag: (state: GameState, action: PayloadAction<string>) => {
             state.flags.push(action.payload);
         },
-        spendItem: (state, action: PayloadAction<number>) => {
+        spendItem: (state: GameState, action: PayloadAction<number>) => {
             state.adventurerItems[state.activeAdventurer] = state.adventurerItems[state.activeAdventurer].map((v, i) => v === action.payload ? 0 : v);
         },
-        createItem: (state, action: PayloadAction<number>) => {
-            state.locationItems[state.currentLocation].push(action.payload);
+        createItem: (state: GameState, action: PayloadAction<number>) => {
+            state.locationItems[state.currentLocation[state.activeAdventurer] ?? 0].push(action.payload);
         },
-        resetGame: (state, action: Action) => {
+        resetGame: (state: GameState, action: Action) => {
             state.locationItems = {};
             state.adventurerItems = {};
             state.flags = [];
             state.activeAdventurer = 1;
+            state.currentLocation = {};
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchUpdate.fulfilled, (state, action) => {
+            return {...state, ...action.payload, activeAdventurer: parseInt(localStorage.getItem("adventurerId") ?? "0", 10)};
+        });
     }
 });
 

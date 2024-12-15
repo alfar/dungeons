@@ -1,24 +1,29 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import gameReducer, { GameState } from '../features/game/gameSlice';
+import updateReducer from '../features/updater/updaterSlice'
 
-const persistedState : { game: GameState } = JSON.parse(localStorage.getItem('reduxState') ?? JSON.stringify({
+const persistedState : { game: GameState } = { ...(JSON.parse(localStorage.getItem('reduxState') ?? JSON.stringify({
     items: {
-        currentLocation: 0,
+        currentLocation: {},
         selectedAdventurer: 1,
         adventurerItems: {},
         locationItems: {}
     }
-}));
+}))), activeAdventurer: parseInt(localStorage.getItem("adventurerId") ?? "0", 10) };
 
 const store = configureStore({
     reducer: {
-        game: gameReducer
+        game: gameReducer,
+        updater: updateReducer
     },
     preloadedState: persistedState
 });
 
 store.subscribe(() => {
+    if (store.getState().updater.saving) {
+        fetch("/jul24/storage.php", { body: JSON.stringify(store.getState().game), method: "POST" });
+    }
     localStorage.setItem("reduxState", JSON.stringify(store.getState()));
 });
 
