@@ -78,6 +78,7 @@ export const gameSlice = createSlice({
             state.flags = [];
             state.activeAdventurer = 1;
             state.currentLocation = {};
+            localStorage.setItem("adventurerId", state.activeAdventurer.toString());
         }
     },
     extraReducers: (builder) => {

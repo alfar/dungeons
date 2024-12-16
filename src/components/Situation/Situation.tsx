@@ -10,7 +10,6 @@ import { Roster } from "../Roster/Roster";
 import { useAppDispatch, useAppSelector, withSave } from "../../app/hooks";
 import { changeLocation, dropItem, initializeLocation, pickUpItem, selectAdventurer } from "../../features/game/gameSlice";
 import { Updater } from "../Updater/Updater";
-import { markForSave } from "../../features/updater/updaterSlice";
 
 interface SituationProps {
     adventurerId: number,

@@ -1,0 +1,13 @@
+.updater {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    &--loading {
+        width: 64px;
+        height: 64px;
+        background-image: url(../Item/items.png);
+        background-size: 1024px 4096px;
+        background-position: -256px -128px;
+    }
+}

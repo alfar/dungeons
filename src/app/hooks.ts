@@ -1,4 +1,4 @@
-import { UseDispatch, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import type { RootState, AppDispatch } from './store'
 import { markForSave } from '../features/updater/updaterSlice'
 
