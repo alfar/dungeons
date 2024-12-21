@@ -52,19 +52,11 @@ export function Situation(props: SituationProps) {
         dispatch(withSave(pickUpItem({ locationId: props.locationId, itemIndex: index})));
     };
 
-    const switchAdventurer = (id: number) => {
-        dispatch(selectAdventurer(id));
-    }
-
-    const roster = props.locationId === 0 ? <Roster onAdventurerSwitch={switchAdventurer} /> : null;
-
     return (
         <div className="situation">
             <Updater />
-            {roster}
             <Adventurer {...adventurer} locked={location.locked} actions={location.actions} items={adventurer.items ?? []} onDrop={dropAction} />
-            <Location {...location} items={location.items ?? []} onPickUp={pickUpAction} />
+            <Location locationId={props.locationId} {...location} actions={{}} items={location.items ?? []} onPickUp={pickUpAction} />
         </div>
-
     );
 }

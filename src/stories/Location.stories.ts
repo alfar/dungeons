@@ -25,6 +25,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Empty: Story = {
   args: {
+    locationId: 919,
     name: "An empty room",
     description: "Nothing to see here",
     items: []
@@ -33,6 +34,7 @@ export const Empty: Story = {
 
 export const TwoThings: Story = {
   args: {
+    locationId: 920,
     name: "Something here",
     description: "A dark room, but with something to see.",
     items: [6, 10]

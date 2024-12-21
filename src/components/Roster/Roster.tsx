@@ -1,29 +1,26 @@
-import { useAppDispatch } from "../../app/hooks";
-import { resetGame } from "../../features/game/gameSlice";
+import { useAppSelector } from "../../app/hooks";
 import { adventurers } from "../../resources/adventurers";
 import { Inventory } from "../Inventory/Inventory";
 
 interface RosterProps {
+    locationId: number;
     onAdventurerSwitch: (id: number) => any;
 }
 
 export function Roster(props: RosterProps)
 {
-    const dispatch = useAppDispatch();
-    const adventurerIds = Object.keys(adventurers) as any as Array<number>;
+    const state = useAppSelector(state => state.game);
+    const adventurerIds = Object.keys(adventurers).map(k => parseInt(k, 10)).filter(id => (state.currentLocation[id] ?? 0) === props.locationId);
+    const selectedIndex = adventurerIds.indexOf(state.activeAdventurer);
 
     const selectAdventurer = (index: number) => {
         props.onAdventurerSwitch(adventurerIds[index]);
     };
 
-    const onResetGame = () => {
-        dispatch(resetGame());
-    }
-
     return (
         <div className="card  roster">
-            <h1>Skift eventyrer <button onClick={onResetGame}>Nulstil spillet</button></h1>
-            <Inventory slots={adventurerIds.length} items={adventurerIds.map(id => adventurers[id].icon)} selectedSlotIndex={-1} onSlotClicked={selectAdventurer} />
+            <h2>Eventyrere</h2>
+            <Inventory slots={adventurerIds.length} items={adventurerIds.map(id => adventurers[id].icon)} selectedSlotIndex={selectedIndex} onSlotClicked={selectAdventurer} />
         </div>
     )
 }

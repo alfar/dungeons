@@ -32,7 +32,7 @@ export function Adventurer(props: AdventurerProps) {
         <div className="card  adventurer">
             <h1>{props.name}</h1>
             <section>{props.race} {props.class}</section>
-            <Inventory slots={3} items={props.items} selectedSlotIndex={selectedSlotIndex} onSlotClicked={setSelectedSlotIndex}></Inventory>
+            <Inventory slots={3} items={props.items} selectedSlotIndex={selectedSlotIndex} onSlotClicked={setSelectedSlotIndex} showDescriptions={true} />
             <div className="commands">
                 {commands}
             </div>
